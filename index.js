@@ -14,7 +14,7 @@ app.ws('/', (ws, req) => {
   ws.onmessage = (msg) => {
     var data = JSON.parse(msg.data)
     if(data.ctrl !== undefined && data.value !== undefined) {
-      exec('v4l2-ctl -c '+data.ctrl+'='+data.value, (error, stdout, stderr) => {
+      exec('v4l2-ctl -d /dev/video0 -c '+data.ctrl+'='+data.value, (error, stdout, stderr) => {
         if(error) {
           console.error('error: '+error)
         }
@@ -32,7 +32,7 @@ var broadcast = (data) => {
 }
 
 var update = () => {
-  exec('v4l2-ctl --list-ctrls-menus', (error, stdout, stderr) => {
+  exec('v4l2-ctl -d /dev/video0 --list-ctrls-menus', (error, stdout, stderr) => {
     if(error) {
       console.error('error: '+error)
       return
@@ -45,4 +45,4 @@ app.get('/', (req, res, next) => {
   res.sendFile('public/index.html')
 })
 
-app.listen(8002)
+app.listen(8080)

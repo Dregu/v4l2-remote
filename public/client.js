@@ -5,6 +5,7 @@ function connect(wsUri, reconnectMs) {
   function update(data) {
     menu = []
     var line = data.data.split('\n'), section = -1, ctrlnum = 0
+    menu.push({ name: "foo", ctrls: [] }); section = 0; // purkka
     for(var i = 0; i < line.length; i++) {
       // Empty line
       if(line[i].trim() == '') {
@@ -21,8 +22,8 @@ function connect(wsUri, reconnectMs) {
         section++
       }
       // Control
-      else if(line[i].trim().match(/([^ ]*) \(([^\)]*)\) +: *( min=([^ ]*))?( max=([^ ]*))?( step=([^ ]*))?( default=([^ ]*))?( value=([^ ]*))?( flags=(.*))?$/)) {
-        var ctrl = line[i].trim().match(/([^ ]*) \(([^\)]*)\) +: *( min=([^ ]*))?( max=([^ ]*))?( step=([^ ]*))?( default=([^ ]*))?( value=([^ ]*))?( flags=(.*))?$/)
+      else if(line[i].trim().match(/([^ ]*) 0x.*? \(([^\)]*)\) *: *( min=([^ ]*))?( max=([^ ]*))?( step=([^ ]*))?( default=([^ ]*))?( value=([^ ]*))?( flags=(.*))?$/)) {
+        var ctrl = line[i].trim().match(/([^ ]*) 0x.*? \(([^\)]*)\) *: *( min=([^ ]*))?( max=([^ ]*))?( step=([^ ]*))?( default=([^ ]*))?( value=([^ ]*))?( flags=(.*))?$/)
         if(ctrl) {
           menu[section].ctrls.push({ ctrl: ctrl[1], type: ctrl[2], min: ctrl[4], max: ctrl[6], step: ctrl[8], default: ctrl[10], value: ctrl[12], flags: ctrl[14], menu: []})
         }
